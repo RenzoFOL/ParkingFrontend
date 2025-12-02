@@ -1,0 +1,20 @@
+# Imagen base ligera con Node
+FROM node:18-alpine
+
+# Directorio de trabajo dentro del contenedor
+WORKDIR /app
+
+# Copiamos package.json y package-lock.json
+COPY package*.json ./
+
+# Instalamos dependencias
+RUN npm install
+
+# El código fuente se montará como volumen, no lo copiamos aquí
+# Esto permite hot reload desde tu máquina
+
+# Exponemos el puerto de Vite/SvelteKit
+EXPOSE 5173
+
+# Comando por defecto: levantar el servidor de desarrollo
+CMD ["npm", "run", "dev", "--", "--host"]

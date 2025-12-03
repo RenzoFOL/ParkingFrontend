@@ -9,7 +9,8 @@
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync || echo ''",
 		"format": "prettier --write .",
-		"lint": "prettier --check . && eslint ."
+		"lint": "prettier --check . && eslint .",
+		"start": "node build/index.js"
 	},
 	"devDependencies": {
 		"@eslint/compat": "^1.4.0",
@@ -30,13 +31,5 @@
 		"svelte": "^5.43.8",
 		"tailwindcss": "^4.1.17",
 		"vite": "^7.2.2"
-	},
-		"scripts": {
-	"dev": "vite dev",
-	"build": "vite build",
-	"preview": "vite preview",
-	"lint": "eslint .",
-	"start": "node build/index.js"
 	}
-
 }

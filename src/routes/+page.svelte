@@ -1,2 +1,9 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
+<script>
+  import Login from '$lib/components/inicio-registro/Login.svelte';
+</script>
+
+<h1 style="text-align:center; margin-top:2rem;">ParkSistem</h1>
+
+<div style="display:flex; justify-content:center; margin-top:1.5rem;">
+  <Login />
+</div>

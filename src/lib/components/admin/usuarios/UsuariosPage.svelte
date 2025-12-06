@@ -9,20 +9,15 @@
   import NoAutorizado from './NoAutorizado.svelte';
 
   let usuarios = [];
-  let cargandoLista = false;
-  let errorLista = null;
   let autorizado = false;
+  let error = null;
+  let cargando = false;
 
   async function cargarUsuarios() {
-    cargandoLista = true;
-    errorLista = null;
-    try {
-      usuarios = await listarUsuariosAPI();
-    } catch (e) {
-      errorLista = e.message || 'Error al cargar usuarios';
-    } finally {
-      cargandoLista = false;
-    }
+    cargando = true;
+    error = null;
+    usuarios = await listarUsuariosAPI().catch(() => []);
+    cargando = false;
   }
 
   async function crearUsuario(datos) {
@@ -37,12 +32,10 @@
       return;
     }
     const info = getUserInfo();
-    if (!info || info.rol !== 'ADMIN') {
-      autorizado = false;
-      return;
+    if (info?.rol === 'ADMIN') {
+      autorizado = true;
+      await cargarUsuarios();
     }
-    autorizado = true;
-    await cargarUsuarios();
   });
 </script>
 
@@ -59,12 +52,19 @@
 
     <section class="seccion">
       <h2>Usuarios registrados</h2>
-      <UsuariosTable {usuarios} {cargandoLista} {errorLista} />
+      <UsuariosTable {usuarios} {cargando} {error} />
     </section>
   {/if}
 </div>
 
 <style>
+    h1 {
+    text-align: center;
+    }
+    h2 {
+    text-align: center;
+    }
+
   .pagina {
     padding: 1rem;
     display: flex;
@@ -77,5 +77,8 @@
     padding: 1rem;
     background: #fafafa;
   }
-  .seccion-form { max-width: 480px; }
+  .seccion-form {
+    max-width: 480px;
+    margin: 0 auto;
+  }
 </style>

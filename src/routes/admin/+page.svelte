@@ -3,15 +3,16 @@
   import { goto } from '$app/navigation';
   import { getToken, getUserInfo } from '$lib/auth';
 
+  import VehiculoPage from '$lib/components/admin/dashboard/VehiculoPage.svelte';
+
   let user = null;
 
   onMount(() => {
     const token = getToken();
     if (!token) {
-      goto('/'); // si no hay token, lo mandamos al login
+      goto('/');
       return;
     }
-
     user = getUserInfo();
   });
 </script>
@@ -20,7 +21,9 @@
   <h1>Dashboard</h1>
 
   {#if user}
-    <p>Sesión iniciada como <strong>{user.sub}</strong> ({user.rol})</p>
+    <p>Hola, <strong>{user.getUserInfo}</strong> ({user.rol})</p>
+    <VehiculoPage />
+
   {:else}
     <p>Cargando información del usuario...</p>
   {/if}
@@ -30,8 +33,10 @@
   .contenido {
     padding: 1rem;
   }
-
   h1 {
-    margin-bottom: 1rem;
+    text-align: center;
+  }
+  p {
+    text-align: center;
   }
 </style>

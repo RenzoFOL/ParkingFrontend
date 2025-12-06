@@ -1,9 +1,7 @@
 import { BACKEND_URL } from '$lib/config';
 import { saveToken, getToken, clearToken } from '$lib/auth';
 
-//
-// 1) LOGIN (única ruta pública)
-//
+// login y manejo de token JWT en localStorage
 export async function login(correo, password) {
   const response = await fetch(`${BACKEND_URL}/api/auth/login`, {
     method: 'POST',
@@ -26,9 +24,7 @@ export async function login(correo, password) {
   return data;
 }
 
-//
-// 2) Helper para llamadas protegidas con JWT
-//
+// Función auxiliar para hacer fetch con autorización 
 async function authorizedFetch(path, options = {}) {
   const token = getToken();
   if (!token) {
@@ -54,7 +50,7 @@ async function authorizedFetch(path, options = {}) {
   return response;
 }
 
-// 3) Parking: registrar entrada
+//Registar entrada de vehículo
 export async function registrarEntradaAPI(placaVehiculo, tipoVehiculo) {
   const response = await authorizedFetch('/api/parking/entrada', {
     method: 'POST',
@@ -68,11 +64,10 @@ export async function registrarEntradaAPI(placaVehiculo, tipoVehiculo) {
   }
 
   const data = await response.json();
-  console.log('OK registrarEntradaAPI:', data);
   return data; // Ticket
 }
 
-// 4) Parking: registrar salida
+//Registrar salida de vehículo 
 export async function registrarSalidaAPI(placaVehiculo) {
   const response = await authorizedFetch('/api/parking/salida', {
     method: 'POST',
@@ -86,14 +81,10 @@ export async function registrarSalidaAPI(placaVehiculo) {
   }
 
   const data = await response.json();
-  console.log('OK registrarSalidaAPI:', data);
-  return data; // Ticket
+  return data;
 }
 
-
-//
-// 5) Usuarios: listar (solo ADMIN)
-//
+//ver lista de usuarios (solo ADMIN)
 export async function listarUsuariosAPI() {
   const response = await authorizedFetch('/api/usuarios', {
     method: 'GET'
@@ -107,11 +98,23 @@ export async function listarUsuariosAPI() {
   return await response.json();
 }
 
-// 6) Usuarios: crear (solo ADMIN)
+// Crear usuario (solo ADMIN)
 export async function crearUsuarioAPI({ nombre, correo, password, rol }) {
   const response = await authorizedFetch('/api/usuarios', {
     method: 'POST',
     body: JSON.stringify({ nombre, correo, password, rol })
+  });
+  if (!response.ok) {
+    const msg = await response.text().catch(() => null);
+    throw new Error(msg || `Error ${response.status}: ${response.statusText}`);
+  }
+  return await response.text();
+}
+
+// Ver vehiculos en el parking (ADMIN y EMPLEADO)
+export async function verVehiculosActivosAPI() {
+  const response = await authorizedFetch('/api/parking/vehiculos-activos', {
+    method: 'GET'
   });
 
   if (!response.ok) {
@@ -119,6 +122,9 @@ export async function crearUsuarioAPI({ nombre, correo, password, rol }) {
     throw new Error(msg || `Error ${response.status}: ${response.statusText}`);
   }
 
-  // backend devuelve un String con mensaje
-  return await response.text();
+  if (response.status === 204) {
+    return [];
+  }
+
+  return await response.json();
 }

@@ -65,6 +65,9 @@
 {/if}
 
 <style>
+      h1 {
+    text-align: center;
+    }
   .form {
     display: flex;
     flex-wrap: wrap;

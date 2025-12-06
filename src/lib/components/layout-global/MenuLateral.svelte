@@ -18,7 +18,7 @@
     clearToken();
     goto('/');
   }
-  
+
 </script>
 
 <nav class="menu">
@@ -37,7 +37,7 @@
   </ul>
 
   <button class="logout" on:click={handleLogout}>
-    ⎋ Cerrar sesión
+    Cerrar sesión
   </button>
 </nav>
 

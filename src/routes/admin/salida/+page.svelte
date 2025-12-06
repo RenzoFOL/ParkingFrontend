@@ -53,6 +53,9 @@
 {/if}
 
 <style>
+    h1 {
+    text-align: center;
+    }
   .form {
     display: flex;
     gap: 1rem;

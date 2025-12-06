@@ -26,10 +26,25 @@
     text-align: left;
     font-weight: bold;
   }
-  .primary { background: #0077ff; color: white; }
-  .primary:hover { background: #005fcc; }
-  .success { background: #28a745; color: white; }
-  .success:hover { background: #1e7e34; }
-  .danger { background: #dc3545; color: white; }
-  .danger:hover { background: #a71d2a; }
+  .primary { 
+    background: #0077ff;
+    color: white; 
+  }
+  .primary:hover { 
+    background: #005fcc; 
+  }
+  .success { 
+    background: #28a745; 
+    color: white; 
+  }
+  .success:hover { 
+    background: #1e7e34; 
+  }
+  .danger { 
+    background: #dc3545; 
+    color: white; 
+  }
+  .danger:hover { 
+    background: #a71d2a; 
+    }
 </style>

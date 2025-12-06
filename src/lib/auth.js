@@ -11,7 +11,7 @@ export function clearToken() {
     localStorage.removeItem('jwt');
 }
 
-// Decodificar de info del usuario desde el JWT esto para manejar los accesos en el frontend, sin hacer llamadas al backend
+// Decodificador de info del usuario desde el JWT esto para manejar los accesos en el frontend, sin hacer llamadas al backend
 export function getUserInfo() {
     const token = getToken();
     if (!token) return null;

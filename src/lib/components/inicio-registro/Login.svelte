@@ -24,6 +24,10 @@
   }
 </script>
 
+<svelte:head>
+    <title>ParkSystem | Inicio de Sesion</title>
+</svelte:head>
+
 <form class="login-card" on:submit|preventDefault={handleSubmit}>
   <h2>Iniciar sesión</h2>
 

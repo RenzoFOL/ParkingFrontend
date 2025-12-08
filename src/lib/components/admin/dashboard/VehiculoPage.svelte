@@ -41,6 +41,10 @@
   });
 </script>
 
+<svelte:head>
+    <title>Panel principal</title>
+</svelte:head>
+
 <div class="pagina">
   <h1>Vehículos en el Parking</h1>
   {#if !autorizado}

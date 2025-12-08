@@ -32,6 +32,7 @@ async function authorizedFetch(path, options = {}) {
 }
 
 // USUARIOS
+
 // funcion login, manda una peteicion al backend y guarda el token en localStorage
 export async function login(correo, password) {
   const response = await fetch(`${BACKEND_URL}/api/auth/login`, {
@@ -113,7 +114,8 @@ export async function eliminarUsuarioAPI(id) {
   return true;
 }
 
-//vehículos
+// VEHICULOS
+
 // función que obtiene la lista de vehículos activos desde el backend usando el token de autorización
 export async function verVehiculosActivosAPI() {
   const response = await authorizedFetch('/api/parking/vehiculos-activos', {
@@ -131,3 +133,52 @@ export async function verVehiculosActivosAPI() {
 
   return await response.json();
 }
+
+// ESPACIOS
+
+// función que obtiene la lista de todos los espacios del estacionamiento desde el backend usando el token de autorización.
+export async function listarEspaciosAPI() {
+  const response = await authorizedFetch('/api/espacios', {
+    method: 'GET'
+  });
+
+  if (!response.ok) {
+    const msg = await response.text().catch(() => null);
+    throw new Error(msg || `Error ${response.status}: ${response.statusText}`);
+  }
+
+  return await response.json();
+}
+
+// función que crea un nuevo espacio en el backend enviando nombre y tipo de vehiculo
+export async function crearEspacioAPI(espacioDTO) {
+  const response = await authorizedFetch('/api/espacios', {
+    method: 'POST',
+    body: JSON.stringify(espacioDTO)
+  });
+
+  if (!response.ok) {
+    const msg = await response.text().catch(() => null);
+    throw new Error(msg || `Error ${response.status}: ${response.statusText}`);
+  }
+
+  return await response.json();
+}
+
+// función que elimina un espacio del backend por su id
+export async function eliminarEspacioAPI(id) {
+  const response = await authorizedFetch(`/api/espacios/${id}`, {
+    method: 'DELETE'
+  });
+
+  if (!response.ok) {
+    const msg = await response.text().catch(() => null);
+    throw new Error(msg || `Error ${response.status}: ${response.statusText}`);
+  }
+
+  return true;
+}
+
+// PLANES
+// SUSCRIPCIONES
+// TARIFAS

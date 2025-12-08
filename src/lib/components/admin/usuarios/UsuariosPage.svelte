@@ -62,6 +62,10 @@
   });
 </script>
 
+<svelte:head>
+    <title>Gestión de usuarios</title>
+</svelte:head>
+
 <div class="pagina">
   <h1>Gestión de Usuarios</h1>
 

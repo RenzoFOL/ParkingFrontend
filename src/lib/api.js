@@ -335,4 +335,46 @@ export async function eliminarTarifaAPI(id) {
 
 // SUSCRIPCIONES
 
+// función que obtiene la lista de todos las suscripciones desde el backend usando el token de autorización.
+export async function listarSuscripcionesAPI() {
+  const response = await authorizedFetch('/api/suscripciones', {
+    method: 'GET'
+  });
+
+  if (!response.ok) {
+    const msg = await response.text().catch(() => null);
+    throw new Error(msg || `Error ${response.status}: ${response.statusText}`);
+  }
+
+  return await response.json();
+}
+
+// función que crea una nueva suscripción en el backend enviando placa del vehiculo y plan de suscripción
+export async function crearSuscripcionAPI(suscripcionDTO) {
+  const response = await authorizedFetch('/api/suscripciones', {
+    method: 'POST',
+    body: JSON.stringify(suscripcionDTO)
+  });
+
+  if (!response.ok) {
+    const msg = await response.text().catch(() => null);
+    throw new Error(msg || `Error ${response.status}: ${response.statusText}`);
+  }
+
+  return await response.json();
+}
+
+// función que elimina una suscripción del backend por su id
+export async function eliminarSuscripcionAPI(id) {
+  const response = await authorizedFetch(`/api/suscripciones/${id}`, {
+    method: 'DELETE'
+  });
+
+  if (!response.ok) {
+    const msg = await response.text().catch(() => null);
+    throw new Error(msg || `Error ${response.status}: ${response.statusText}`);
+  }
+
+  return true;
+}
 

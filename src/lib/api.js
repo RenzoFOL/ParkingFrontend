@@ -180,5 +180,64 @@ export async function eliminarEspacioAPI(id) {
 }
 
 // PLANES
+
+// función que obtiene la lista de todos los planes desde el backend usando el token de autorización.
+export async function listarPlanesAPI() {
+  const response = await authorizedFetch('/api/planes', {
+    method: 'GET'
+  });
+
+  if (!response.ok) {
+    const msg = await response.text().catch(() => null);
+    throw new Error(msg || `Error ${response.status}: ${response.statusText}`);
+  }
+
+  return await response.json();
+}
+
+// función que crea un nuevo plan en el backend enviando nombre, precio, duración y tipo de vehiculo
+export async function crearPlanAPI(planDTO) {
+  const response = await authorizedFetch('/api/planes', {
+    method: 'POST',
+    body: JSON.stringify(planDTO)
+  });
+
+  if (!response.ok) {
+    const msg = await response.text().catch(() => null);
+    throw new Error(msg || `Error ${response.status}: ${response.statusText}`);
+  }
+
+  return await response.json();
+}
+
+// función que actualiza los datos de un plan existente en el backend según su id
+export async function actualizarPlanAPI(id, planDTO) {
+  const response = await authorizedFetch(`/api/planes/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(planDTO)
+  });
+
+  if (!response.ok) {
+    const msg = await response.text().catch(() => null);
+    throw new Error(msg || `Error ${response.status}: ${response.statusText}`);
+  }
+
+  return await response.json();
+}
+
+// función que elimina un plan del backend por su id
+export async function eliminarPlanAPI(id) {
+  const response = await authorizedFetch(`/api/planes/${id}`, {
+    method: 'DELETE'
+  });
+
+  if (!response.ok) {
+    const msg = await response.text().catch(() => null);
+    throw new Error(msg || `Error ${response.status}: ${response.statusText}`);
+  }
+
+  return true;
+}
+
 // SUSCRIPCIONES
 // TARIFAS

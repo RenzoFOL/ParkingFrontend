@@ -114,6 +114,7 @@ pueda ver, crear y eliminar espacios de estacionamiento, consumiendo tu API segu
             <label>Estado</label>
             <select bind:value={estado}>
               <option value="LIBRE">Libre</option>
+              <option value="LIBRE">Ocupado</option>
               <option value="MANTENIMIENTO">Mantenimiento</option>
             </select>
           </div>

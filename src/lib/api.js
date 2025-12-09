@@ -134,6 +134,40 @@ export async function verVehiculosActivosAPI() {
   return await response.json();
 }
 
+// función que registra la entrada de un vehículo al estacionamiento
+export async function registrarEntradaAPI(placaVehiculo, tipoVehiculo) {
+  const response = await authorizedFetch('/api/parking/entrada', {
+    method: 'POST',
+    body: JSON.stringify({ placaVehiculo, tipoVehiculo })
+  });
+
+  if (!response.ok) {
+    const msg = await response.text().catch(() => null);
+    console.error('Error registrarEntradaAPI:', response.status, msg);
+    throw new Error(msg || `Error ${response.status}: ${response.statusText}`);
+  }
+
+  const data = await response.json();
+  return data;
+}
+
+// función que registra la salida de un vehículo del estacionamiento
+export async function registrarSalidaAPI(placaVehiculo) {
+  const response = await authorizedFetch('/api/parking/salida', {
+    method: 'POST',
+    body: JSON.stringify({ placaVehiculo })
+  });
+
+  if (!response.ok) {
+    const msg = await response.text().catch(() => null);
+    console.error('Error registrarSalidaAPI:', response.status, msg);
+    throw new Error(msg || `Error ${response.status}: ${response.statusText}`);
+  }
+
+  const data = await response.json();
+  return data;
+}
+
 // ESPACIOS
 
 // función que obtiene la lista de todos los espacios del estacionamiento desde el backend usando el token de autorización.
@@ -240,4 +274,63 @@ export async function eliminarPlanAPI(id) {
 }
 
 // SUSCRIPCIONES
+
+
 // TARIFAS
+// función que obtiene la lista de todas las tarifas desde el backend usando el token de autorización.
+export async function listarTarifasAPI() {
+  const response = await authorizedFetch('/api/tarifas', {
+    method: 'GET'
+  });
+
+  if (!response.ok) {
+    const msg = await response.text().catch(() => null);
+    throw new Error(msg || `Error ${response.status}: ${response.statusText}`);
+  }
+
+  return await response.json();
+}
+
+// función que crea una nueva tarifa en el backend enviando nombre, precio por hora y tipo de vehiculo
+export async function crearTarifaAPI(tarifaDTO) {
+  const response = await authorizedFetch('/api/tarifas', {
+    method: 'POST',
+    body: JSON.stringify(tarifaDTO)
+  });
+
+  if (!response.ok) {
+    const msg = await response.text().catch(() => null);
+    throw new Error(msg || `Error ${response.status}: ${response.statusText}`);
+  }
+
+  return await response.json();
+}
+
+// función que actualiza los datos de una tarifa existente en el backend según su id
+export async function actualizarTarifaAPI(id, tarifaDTO) {
+  const response = await authorizedFetch(`/api/tarifas/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(tarifaDTO)
+  });
+
+  if (!response.ok) {
+    const msg = await response.text().catch(() => null);
+    throw new Error(msg || `Error ${response.status}: ${response.statusText}`);
+  }
+
+  return await response.json();
+}
+
+// función que elimina una tarifa del backend por su id
+export async function eliminarTarifaAPI(id) {
+  const response = await authorizedFetch(`/api/tarifas/${id}`, {
+    method: 'DELETE'
+  });
+
+  if (!response.ok) {
+    const msg = await response.text().catch(() => null);
+    throw new Error(msg || `Error ${response.status}: ${response.statusText}`);
+  }
+
+  return true;
+}

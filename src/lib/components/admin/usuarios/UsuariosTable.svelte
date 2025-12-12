@@ -1,14 +1,24 @@
 <script>
-  export let usuarios = [];
-  export let cargandoLista = false;
-  export let errorLista = null;
+  import { onMount } from 'svelte';
+  import { listarUsuariosAPI, actualizarUsuarioAPI, eliminarUsuarioAPI } from '$lib/api';
 
-// Dispatcher para enviar eventos al padre
-  import { createEventDispatcher } from 'svelte';
-  const dispatch = createEventDispatcher();
+  let usuarios = [];
+  let cargandoLista = false;
+  let errorLista = null;
 
- // Función para editar usuario
-  function editar(u) {
+  async function cargarUsuarios() {
+    cargandoLista = true;
+    errorLista = null;
+    try {
+      usuarios = await listarUsuariosAPI();
+    } catch (e) {
+      errorLista = e.message;
+      usuarios = [];
+    }
+    cargandoLista = false;
+  }
+
+  async function editar(u) {
     const datos = {
       id: u.id,
       nombre: prompt("Nuevo nombre:", u.nombre),
@@ -17,16 +27,19 @@
       password: ""
     };
     if (datos.nombre && datos.correo && datos.rol) {
-      dispatch("editarUsuario", datos);
+      await actualizarUsuarioAPI(u.id, datos);
+      await cargarUsuarios();
     }
   }
-  
-// Función para eliminar usuario
-  function eliminar(id) {
+
+  async function eliminar(id) {
     if (confirm("¿Seguro que deseas eliminar este usuario?")) {
-      dispatch("eliminarUsuario", id);
+      await eliminarUsuarioAPI(id);
+      await cargarUsuarios();
     }
   }
+
+  onMount(cargarUsuarios);
 </script>
 
 {#if cargandoLista}
@@ -39,11 +52,7 @@
   <table>
     <thead>
       <tr>
-        <th>ID</th>
-        <th>Nombre</th>
-        <th>Correo</th>
-        <th>Rol</th>
-        <th>Acciones</th>
+        <th>ID</th><th>Nombre</th><th>Correo</th><th>Rol</th><th>Acciones</th>
       </tr>
     </thead>
     <tbody>

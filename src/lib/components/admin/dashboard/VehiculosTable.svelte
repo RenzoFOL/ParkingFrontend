@@ -6,7 +6,7 @@
   let cargando = false;
   let error = null;
 
-// Función para cargar los tickets de vehículos activos desde la API
+  // Función para cargar los tickets de vehículos activos desde la API
   async function cargarTickets() {
     cargando = true;
     error = null;
@@ -19,11 +19,13 @@
     }
   }
 
+  // Al montar el componente, pedimos los tickets
   onMount(() => {
     cargarTickets();
   });
 </script>
-<!-- Tabla para mostrar los vehículos activos, intregado con varios if para cualquier situacion-->
+
+<!-- Tabla para mostrar los vehículos activos, integrada con varios if para cualquier situación -->
 {#if cargando}
   <p>Cargando vehículos...</p>
 {:else if error}

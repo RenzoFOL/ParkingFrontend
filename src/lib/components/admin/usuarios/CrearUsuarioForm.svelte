@@ -1,6 +1,5 @@
 <script>
-  import { createEventDispatcher } from 'svelte';
-  const dispatch = createEventDispatcher();
+  import { crearUsuarioAPI } from '$lib/api';
 
   let nombre = '';
   let correo = '';
@@ -10,13 +9,11 @@
   let error = null;
   let mensaje = null;
 
-  // Maneja el envío del formulari
   async function envioForm(e) {
     e.preventDefault();
     error = null;
     mensaje = null;
 
-    // Validación básica de campos no vacíos
     if (!nombre.trim() || !correo.trim() || !password.trim()) {
       error = 'Completa todos los campos';
       return;
@@ -24,7 +21,7 @@
 
     cargando = true;
     try {
-      dispatch('crearUsuario', { nombre, correo, password, rol });
+      await crearUsuarioAPI({ nombre, correo, password, rol });
       mensaje = 'Usuario creado correctamente';
       nombre = correo = password = '';
       rol = 'EMPLEADO';
@@ -66,42 +63,12 @@
 </form>
 
 <style>
-  form { 
-    display: flex; 
-    flex-direction: column; 
-    gap: 0.75rem; 
-}
-  .campo { 
-    display: flex; 
-    flex-direction: column; 
-    gap: 0.25rem; 
-}
-  input, select { 
-    padding: 0.6rem 0.75rem; 
-    border: 1px solid #ccc; 
-    border-radius: 6px; 
-}
-  button { padding: 0.7rem; 
-    border-radius: 6px; 
-    border: none; 
-    background: #1976d2; 
-    color: white; 
-    font-weight: bold; 
-    cursor: pointer; 
-}
-  button:hover { 
-    background: #125a9c; 
-}
-  button[disabled] { 
-    opacity: 0.6; 
-    cursor: default; 
-}
-  .error { 
-    color: #b00020; 
-    font-weight: bold; 
-}
-  .ok { 
-    color: green; 
-    font-weight: bold; 
-  }
+  form { display: flex; flex-direction: column; gap: 0.75rem; }
+  .campo { display: flex; flex-direction: column; gap: 0.25rem; }
+  input, select { padding: 0.6rem 0.75rem; border: 1px solid #ccc; border-radius: 6px; }
+  button { padding: 0.7rem; border-radius: 6px; border: none; background: #1976d2; color: white; font-weight: bold; cursor: pointer; }
+  button:hover { background: #125a9c; }
+  button[disabled] { opacity: 0.6; cursor: default; }
+  .error { color: #b00020; font-weight: bold; }
+  .ok { color: green; font-weight: bold; }
 </style>

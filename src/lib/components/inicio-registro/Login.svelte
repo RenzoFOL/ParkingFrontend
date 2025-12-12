@@ -1,6 +1,7 @@
 <script>
   import { goto } from '$app/navigation';
   import { login } from '$lib/api';
+  import { getToken, getUserInfo } from '$lib/auth';
 
   let correo = '';
   let password = '';
@@ -15,6 +16,8 @@
     //try catch en caso de error en login, si no, redirige a /admin
     try {
       await login(correo, password);
+      const info = getUserInfo();
+      console.log(info);
       goto('/admin');
     } catch (e) {
       error = e.message || 'Error en inicio de sesion';
